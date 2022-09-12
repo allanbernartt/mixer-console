@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+    <title>The 4-Track Mixer Console</title>
+</head>
+
+<body>
+
+    <div class="main-wrapper">
+        <div class="choose-files" id="choose-files">
+
+            <div class="img-container">
+                <img src="img/console.png" />
+            </div>
+
+            <div class="options-container">
+                <h1>Welcome to The 4-Track Mixer Console Page</h1>
+                <p>This page uses the <a href="https://developer.mozilla.org/docs/Web/API/Web_Audio_API"
+                        target="_blank">Web Audio API</a> to display a multitrack mixer console</p>
+                <div class="select-files">
+
+                    <h2>Choose Files</h2>
+                    <button class="choose-btn" onclick="document.getElementById('file1').click()">Track 1</button>
+                    <input type="file" id="file1" name="file1" accept="audio/*" onchange="handleTrack1(this.files)" />
+                    <button class="choose-btn" onclick="document.getElementById('file2').click()">Track 2</button>
+                    <input type="file" id="file2" name="file2" accept="audio/*" onchange="handleTrack2(this.files)" />
+                    <button class="choose-btn" onclick="document.getElementById('file3').click()">Track 3</button>
+                    <input type="file" id="file3" name="file3" accept="audio/*" onchange="handleTrack3(this.files)" />
+                    <button class="choose-btn" onclick="document.getElementById('file4').click()">Track 4</button>
+                    <input type="file" id="file4" name="file4" accept="audio/*" onchange="handleTrack4(this.files)" />
+
+                    <button class="ok-btn" onclick="loadFiles()">OK</button>
+                </div>
+
+                <div class="select-song">
+                    <h2>Or Choose a Song to mix</h2>
+                    <select id="choose-song" onchange="chooseSong()">
+                        <option value="0" selected>"What is This Thing Called, Evans?" (Jazz Trio)</option>
+                        <option value="1">"The Stroking Age" (Rock)</option>
+                        <option value="2">"Prodigal Inhalation" (Electronic)</option>
+                    </select>
+                    <button class="ok-btn" onclick="loadSong()">OK</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="console-wrapper">
+            <div class="transport-bar">                
+                <div>
+                    <button class="play">Play</button>
+                    <button class="stop">Stop</button>
+                </div>
+
+                <div class="reload">
+                    <button onclick="hideConsole()">Load new Files/Song</button>
+                </div>
+            </div>
+
+            <div class="console" id="console">
+                <div id="press-play">
+                    <h1 id="play-status">Press Play</h1>
+                </div>
+                <% for (let i=1; i < 5; i++) {%>
+                    <div class="track">
+
+                        <section class="main-eq">
+                            <div class="main-eq-header">
+                                <button class="eq-btn" id="open-eq-<%=i%>">10-Band EQ</button>
+                            </div>
+                        </section>
+
+                        <section class="passing-filters">
+                            <div class="passing-filters-section">
+                                <label>HP</label>
+                                <input type="range" class="input-knob" data-diameter="28" min="0" max="20000"
+                                    id="highPass<%=i%>" value="0" step="1" data-bgcolor="#5c5c5b"
+                                    data-fgcolor="#32f9cb" />
+                                <div id="highPass-value<%=i%>">0</div>
+                                <div id="hp-suffix<%=i%>">Hz</div>
+                            </div>
+                            <div class="passing-filters-section">
+                                <label>LP</label>
+                                <input type="range" class="input-knob" data-diameter="28" min="0" max="20000"
+                                    id="lowPass<%=i%>" value="20000" step="1" data-bgcolor="#5c5c5b"
+                                    data-fgcolor="#32f9cb" />
+                                <div id="lowPass-value<%=i%>">20</div>
+                                <div id="lp-suffix<%=i%>">Khz</div>
+                            </div>
+                        </section>
+
+                        <section class="fx">
+                            <div class="fx-section">
+                                <label>Rev</label>
+                                <input type="range" id="convolver-gain-control<%=i%>" min="0" max="5" value="0"
+                                    step="0.05" class="input-knob" data-diameter="28" data-bgcolor="#ffffff"
+                                    data-fgcolor="#000000" />
+                                <div class="fx-value"><span id="convolver-gain-value<%=i%>">0.00</span></div>
+                            </div>
+
+                            <div class="fx-section">
+                                <label>Comp</label>
+                                <input type="range" min="0" max="3" value="0" step="1" class="input-knob"
+                                    data-diameter="28" data-bgcolor="#ffffff" data-fgcolor="#000000"
+                                    id="compression<%=i%>" />
+                                <div class="fx-value"><span id="compressor-value<%=i%>">0</span></div>
+                            </div>
+                        </section>
+
+                        <section class="panning">
+                            <input type="range" id="panner<%=i%>" min="-1" max="1" value="0" step="0.01"
+                                data-action="panner<%=i%>" class="input-knob" data-diameter="28" data-bgcolor="#3d4042"
+                                data-fgcolor="#ffff" />
+                            <label>Pan <span id="pan-percent<%=i%>">0%</span></label>
+                        </section>
+
+                        <div class="volume">
+                            <input type="range" id="volume<%=i%>" min="0" max="2" value="1" step="0.01"
+                                data-action="volume<%=i%>" />
+                        </div>
+
+                        <div class="volume-gain-value"><span id="volume-gain-value<%=i%>">0.0</span></div>
+
+                        <section class="track-name">
+                            <input type="text" value="Track <%=i%>" id="track-name<%=i%>" />
+                            <p>Track <%=i%>
+                            </p>
+                        </section>
+
+                    </div>
+
+                    <div class="eq-console-wrapper" id="eq-console-<%=i%>">
+                        <div class="console-header" id="eq-console-<%=i%>-header">
+                            <div>
+                                <p class="eq-title">10 BAND EQ</p>
+                                <p>Track <%=i%>
+                                </p>
+                            </div>
+
+                            <div class="close" id="close-eq-<%=i%>">
+                                <div class="close-line-rigth"></div>
+                                <div class="close-line-left"></div>
+                            </div>
+                        </div>
+                        <div class="eq-console">
+
+                            <div class="main-eq-control">
+                                <input type="range" class="input-slider" id="eq60-<%=i%>" min="-20" max="20" value="0"
+                                    data-width="9" data-height="130" data-fgcolor="#39cfe6" />
+                                <label>60</label>
+                            </div>
+
+                            <div class="main-eq-control">
+                                <input type="range" class="input-slider" id="eq170-<%=i%>" min="-20" max="20" value="0"
+                                    data-width="9" data-height="130" data-fgcolor="#39cfe6" />
+                                <label>170</label>
+                            </div>
+
+                            <div class="main-eq-control">
+                                <input type="range" class="input-slider" id="eq310-<%=i%>" min="-20" max="20" value="0"
+                                    data-width="9" data-height="130" data-fgcolor="#39cfe6" />
+                                <label>310</label>
+                            </div>
+                            <div class="main-eq-control">
+                                <input type="range" class="input-slider" id="eq600-<%=i%>" min="-20" max="20" value="0"
+                                    data-width="9" data-height="130" data-fgcolor="#39cfe6" />
+                                <label>600</label>
+                            </div>
+                            <div class="main-eq-control">
+                                <input type="range" class="input-slider" id="eq1K-<%=i%>" min="-20" max="20" value="0"
+                                    data-width="9" data-height="130" data-fgcolor="#39cfe6" />
+                                <label>1K</label>
+                            </div>
+                            <div class="main-eq-control">
+                                <input type="range" class="input-slider" id="eq3K-<%=i%>" min="-20" max="20" value="0"
+                                    data-width="9" data-height="130" data-fgcolor="#39cfe6" />
+                                <label>3K</label>
+                            </div>
+                            <div class="main-eq-control">
+                                <input type="range" class="input-slider" id="eq6K-<%=i%>" min="-20" max="20" value="0"
+                                    data-width="9" data-height="130" data-fgcolor="#39cfe6" />
+                                <label>6K</label>
+                            </div>
+                            <div class="main-eq-control">
+                                <input type="range" class="input-slider" id="eq12K-<%=i%>" min="-20" max="20" value="0"
+                                    data-width="9" data-height="130" data-fgcolor="#39cfe6" />
+                                <label>12K</label>
+                            </div>
+                            <div class="main-eq-control">
+                                <input type="range" class="input-slider" id="eq14K-<%=i%>" min="-20" max="20" value="0"
+                                    data-width="9" data-height="130" data-fgcolor="#39cfe6" />
+                                <label>14K</label>
+                            </div>
+                            <div class="main-eq-control">
+                                <input type="range" class="input-slider" id="eq16K-<%=i%>" min="-20" max="20" value="0"
+                                    data-width="9" data-height="130" data-fgcolor="#39cfe6" />
+                                <label>16K</label>
+                            </div>
+                        </div>
+
+                    </div>                   
+                    <%} %>
+
+            </div><!-- console -->
+        </div><!-- console-wrapper -->
+    </div><!-- main-wrapper -->
+
+    <script src="js/knobs.js"></script>
+    <script src="js/load-page.js"></script>
+    <script src="js/audio.js"></script>
+</body>
+
+</html>
