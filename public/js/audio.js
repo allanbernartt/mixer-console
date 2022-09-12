@@ -75,27 +75,10 @@ const playable = (trackStyle) => {
         document.getElementById('eq-console-' + (i + 1)).style.display = 'none'
         let mtop = i * 30
         document.getElementById('eq-console-' + (i + 1)).style.marginTop = `${mtop}px`;
-
-        if (screenSize.matches) {
-            //desktop
-            dragElement(document.getElementById('eq-console-' + (i + 1)));
-        } else {
-            //mobile
-            document.getElementById('eq-console-' + (i + 1)).addEventListener('touchmove', function (e) {
-                let touchLocation = e.targetTouches[0];
-
-                document.getElementById('eq-console-' + (i + 1)).style.left = touchLocation.pageX + 'px';
-                document.getElementById('eq-console-' + (i + 1)).style.top = touchLocation.pageY + 'px';
-            })
-
-            document.getElementById('eq-console-' + (i + 1)).addEventListener('touchend', function (e) {
-
-                let x = parseInt(document.getElementById('eq-console-' + (i + 1)).style.left);
-                let y = parseInt(document.getElementById('eq-console-' + (i + 1)).style.top);
-            })
-        }
+     
     }
 
+  
     let trackOfArray = [];
 
     const trackArray = () => {

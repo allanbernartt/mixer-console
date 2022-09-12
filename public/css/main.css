@@ -199,8 +199,7 @@ body {
     background: rgb(217,217,226);
     background: linear-gradient(0deg, rgba(217,217,226,1) 0%, rgba(236,236,236,1) 96%, rgba(231,236,236,1) 100%, rgba(255,255,255,1) 100%);
     z-index: 10;
-    border-radius: 20px;
-    cursor: move;
+    border-radius: 20px;    
 }
 
 .close {
