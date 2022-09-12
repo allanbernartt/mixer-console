@@ -2,9 +2,13 @@
 
 Web app that makes use of the [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API). Users can mix songs using a 10-Band Equalizer, Reverb, Compressor, Panning, Volume, HPF and LPF, either by using their own audio files or the pre-loaded songs.
 
-Read this in Portuguese: [README em Português](https://github.com/allanbernartt/envelopes-api/blob/main/README.pt-br.md)
+Read this in Portuguese: [README em Português](https://github.com/allanbernartt/mixer-console/blob/main/README.pt-br.md)
 
 This project was built as part of my personal portfolio. It uses Node v17.x, Web Audio API and EJS.
+
+![alt text](https://github.com/allanbernartt/mixer-console/blob/main/home.png?raw=true)
+![alt text](https://github.com/allanbernartt/mixer-console/blob/main/mixconsole.png?raw=true)
+
 
 ## Running the app
 To run locally, run `npm install`, then `npm start` or `npm run dev` and open localhost:5000 in the browser
