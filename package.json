@@ -2,7 +2,7 @@
   "name": "simpleaudio",
   "version": "1.0.0",
   "description": "",
-  "main": "audio.js",
+  "main": "index.js",
   "directories": {
     "example": "example"
   },
